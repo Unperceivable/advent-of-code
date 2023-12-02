@@ -80,6 +80,5 @@ def improved_trebuchet(calibration_text: list[str]):
 if __name__ == "__main__":
     calibration_text_path = Path("trebuchet.txt")
     with open(calibration_text_path) as calibration_text:
-        # calibration_value = trebuchet(calibration_text)
-        calibration_value = improved_trebuchet(calibration_text)
-        print(calibration_value)
+        print(f"Calibration Value: {trebuchet(calibration_text)}")
+        print(f"Improved Calibration Value: {improved_trebuchet(calibration_text)}")
