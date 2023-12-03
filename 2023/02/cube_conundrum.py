@@ -67,7 +67,7 @@ def min_power_cube_conundrum(conundrum_text: list[str]):
     The power of the minimum set of cubes for each game are 48, 12, 1560, 630, and 36, a sum of 2286."""
     
     sum_min_game_powers = 0
-    for line in conundrum_text.readlines():
+    for line in conundrum_text:
         game_id = int(game_pattern.search(line).group(1))
         red_max = max([int(_) for _ in red_pattern.findall(line)])       
         green_max = max([int(_) for _ in green_pattern.findall(line)])       
@@ -80,8 +80,9 @@ def min_power_cube_conundrum(conundrum_text: list[str]):
 
 if __name__ == "__main__":
     cube_conundrum_text_path = Path("cube_conundrum.txt")
-    with open(cube_conundrum_text_path) as cube_conundrum_text:
+    with open(cube_conundrum_text_path) as cube_conundrum_file:
 
         sample_game = Game(0, 12, 13, 14)
-        # print(f"Cube Conundrum: {cube_conundrum(cube_conundrum_text, sample_game)}")
+        cube_conundrum_text = cube_conundrum_file.readlines()
+        print(f"Cube Conundrum: {cube_conundrum(cube_conundrum_text, sample_game)}")
         print(f"Min Power Cube Conundrum: {min_power_cube_conundrum(cube_conundrum_text)}")

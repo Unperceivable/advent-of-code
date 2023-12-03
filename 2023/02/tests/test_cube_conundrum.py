@@ -1,4 +1,3 @@
-
 """Trebuchet Tests."""
 import unittest
 from cube_conundrum import Game, cube_conundrum, min_power_cube_conundrum
