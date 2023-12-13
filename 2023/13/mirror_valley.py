@@ -1,4 +1,4 @@
-"""Solutions to https://adventofcode.com/2023/day/12 Puzzles."""
+"""Solutions to https://adventofcode.com/2023/day/13 Puzzles."""
 from math import floor
 from collections import namedtuple, defaultdict
 from pathlib import Path
