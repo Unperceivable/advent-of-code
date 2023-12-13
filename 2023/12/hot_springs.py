@@ -1,9 +1,6 @@
 """Solutions to https://adventofcode.com/2023/day/12 Puzzles."""
 
-import re
-from collections import namedtuple, defaultdict
 from pathlib import Path
-from itertools import combinations
 
 Coord = namedtuple("Coord", ["x", "y"])
 
@@ -26,25 +23,33 @@ class HotSprings():
         numeric: describes portions of consecutive damage
         Return the sum of arrangements posible due to the unkown portions, in this case 10 (1,4,1,4,10)"""
         
-        
+        sum_of_arangements = 0
         for line in self.damage_report:
-            visual_report, numeric_report = line.split
-            numeric_report = numeric_report.split(",")
-            base_pattern = "[.?]*?([?#]{" + numeric_report[0]+ "})"
-            pattern_prefix = "[.?]+?([?#]{"
-            pattern_postfix = "})"
-            rest_pattern = "".join([rf"{pattern_prefix}{val}{pattern_postfix}" for val in numeric_report[1:]])
-            arrangement_pattern =  f"(?={base_pattern}{rest_pattern})"
-            print(arrangement_pattern)
-            arrangement_pattern = re.compile(arrangement_pattern)
-            arrangements = arrangement_pattern.findall(visual_report)
-            print(arrangements)
-            print(len(arrangements))
+            visual_report, numeric_report = line.split()
+            numeric_report = [int(str) for str in numeric_report.split(",")]
+            all_arrangements = self.generate_arrangements(visual_report)
+            valid_arrangements = [1 for arranagement in all_arrangements if arranagement == numeric_report]
+            sum_of_arangements += sum(valid_arrangements) 
+        return sum_of_arangements
+    
+    def generate_arrangements(self, line):
+        arrangements = [line]
+        while "?" in arrangements[0]:
+            new_arrangements = []
+            for line in arrangements:
+                new_arrangements.append(line.replace("?", "#", 1))
+                new_arrangements.append(line.replace("?", ".", 1))
+            arrangements = new_arrangements
+
+        arrangements = [arrangement.split(".") for arrangement in arrangements]
+        arrangement_lens = []
+        for arrangement in arrangements:
+            arrangement_lens.append([len(str) for str in arrangement if str])
+        return arrangement_lens
 
 if __name__ == "__main__":
     puzzle_input_path = Path("puzzle_input.txt")
     with open(puzzle_input_path) as puzzle_input_file:
-
         puzzle_input = puzzle_input_file.read().splitlines()
         print(f"Solution to first problem: {HotSprings(puzzle_input).sum_of_arrangements()}")
-        print(f"Solution to second problem: {HotSprings(puzzle_input).sum_of_arrangements()}")
+        # print(f"Solution to second problem: {HotSprings(puzzle_input).sum_of_arrangements()}")
