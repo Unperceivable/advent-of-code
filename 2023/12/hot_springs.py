@@ -2,8 +2,6 @@
 
 from pathlib import Path
 
-Coord = namedtuple("Coord", ["x", "y"])
-
 class HotSprings():
     
     def __init__(self, damage_report: "list[str]"):
