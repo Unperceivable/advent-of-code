@@ -26,4 +26,21 @@ class TestMirrorValley(unittest.TestCase):
         self.assertEqual(MirrorValley(puzzle_input).sum_of_reflections(), expected_result)
 
     def test_part_two(self):
-       pass 
+        puzzle_input = ["#.##..##.",
+                        "..#.##.#.",
+                        "##......#",
+                        "##......#",
+                        "..#.##.#.",
+                        "..##..##.",
+                        "#.#.##.#.",
+                        "",
+                        "#...##..#",
+                        "#....#..#",
+                        "..##..###",
+                        "#####.##.",
+                        "#####.##.",
+                        "..##..###",
+                        "#....#..#",]
+
+        expected_result = 400
+        self.assertEqual(MirrorValley(puzzle_input, smudged=True).sum_of_reflections(), expected_result)
