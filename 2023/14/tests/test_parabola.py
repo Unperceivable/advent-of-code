@@ -2,7 +2,7 @@
 
 import unittest
 from parabola import Parabola
-class TestHotSprings(unittest.TestCase):
+class TestParabola(unittest.TestCase):
 
     def test_part_one(self):
         """."""
