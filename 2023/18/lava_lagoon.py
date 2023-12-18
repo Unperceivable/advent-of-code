@@ -16,16 +16,28 @@ class LavaLagoon():
         self.original_color = 0
         self.new_color = 1
 
-    def dig_lagoon(self):
-        plan_pattern = re.compile(r"(\w) (\d+)")
-        commands = []
-        current_x, current_y = 0,0
-        min_x, min_y, max_x, max_y = 0,0,0,0
-        for line in self.dig_plan:
+    def get_dist_and_direction(self, line, hex=False):
+        if hex:
+            hex_map = {0:"R", 1: "D", 2:"L", 3:"U"}
+            plan_pattern = re.compile(r"\w \d+ \(#(\w+)\)")
+            match = plan_pattern.match(line)
+            hex_value = match.group(1)
+            distance = int(hex_value[:-1], 16)
+            direction = hex_map[int(hex_value[-1], 16)]
+            return distance, direction
+        else:
+            plan_pattern = re.compile(r"(\w) (\d+)")
             match = plan_pattern.match(line)
             direction = match.group(1)
             distance = int(match.group(2))
-            # color = match.group(3)
+            return distance, direction
+        
+    def dig_lagoon(self, hex=False):
+        current_x, current_y = 0,0
+        points = [(current_x, current_y)]
+        perimeter = 0
+        for line in self.dig_plan:
+            distance, direction = self.get_dist_and_direction(line, hex=hex)
             if direction == "R":
                 current_x += distance
             elif direction == "L":
@@ -34,45 +46,26 @@ class LavaLagoon():
                 current_y -= distance
             elif direction == "D":
                 current_y += distance
+            perimeter += distance
+            points.append((current_x, current_y))
 
-            max_x = max(max_x, current_x)
-            max_y = max(max_y, current_y)
+        area = int(self.polygon_area(points))
+        return area+(perimeter//2)+1
 
-            min_x = min(min_x, current_x)
-            min_y = min(min_y, current_y)
+    def polygon_area(self, points):
+        n = len(points)
+        if n < 3:
+            raise ValueError("A polygon must have at least 3 points.")
 
+        # Apply the Shoelace formula
+        area = 0.0
+        for i in range(n):
+            x1, y1 = points[i]
+            x2, y2 = points[(i + 1) % n]  # Use modulo to wrap around to the first point
+            area += (x1 * y2 - x2 * y1)
 
-            commands.append((direction, distance))
-
-        self.site_width = max_x - min_x
-        self.site_height = max_y - min_y
-        offset_start = (abs(min_x), abs(min_y))
-        self.dig(commands, offset_start)
-        flood_start = (1,self.dig_site[0].index(1)+1)
-        self.flood_fill(flood_start)
-
-    def dig(self, commands, start):            
-        self.dig_site = [[0 for _ in range(self.site_width+1)] for _ in range(self.site_height+1)]
-        current_x , current_y = start
-        self.dig_site[current_y][current_x] = 1
-        for direction, distance in commands:
-            if direction == "R":
-                for _ in range(distance):
-                    current_x += 1
-                    self.dig_site[current_y][current_x] = self.new_color
-            elif direction == "L":
-                for _ in range(distance):
-                    current_x -= 1
-                    self.dig_site[current_y][current_x] = self.new_color
-            elif direction == "U":
-                for _ in range(distance):
-                    current_y -= 1
-                    self.dig_site[current_y][current_x] = self.new_color
-            elif direction == "D":
-                for _ in range(distance):
-                    current_y += 1
-                    self.dig_site[current_y][current_x] = self.new_color
-    
+        area = abs(area) / 2.0
+        return area
 
     def flood_fill(self, start):
         stack = [start]
@@ -111,8 +104,9 @@ if __name__ == "__main__":
 
         puzzle_input = puzzle_input_file.read().splitlines()
         lava_lagoon = LavaLagoon(puzzle_input)
-        lava_lagoon.dig_lagoon()
-        lava_count = lava_lagoon.count_lava()
+        lava_count = lava_lagoon.dig_lagoon()
+        print(f"Solution to first problem: {lava_count}")
+        lava_count = lava_lagoon.dig_lagoon(hex=True)
         print(f"Solution to first problem: {lava_count}")
         # print(f"Solution to first problem: {lava_lagoon.calc_focusing_power()}")
         
