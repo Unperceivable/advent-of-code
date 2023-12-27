@@ -50,5 +50,5 @@ class TestWorkflows(unittest.TestCase):
                         
         expected_result = 167409079868000
         workflows = Workflows(puzzle_input)
-        distinct_ratings = workflows.distinct_ratings()
-        self.assertEqual(distinct_ratings, expected_result)
+        workflows.set_valid_branches()
+        self.assertEqual(workflows.max_combinations(), expected_result)

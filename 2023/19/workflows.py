@@ -25,6 +25,8 @@ class Workflows():
         self.parts = self.extract_parts(part_list)
         self.workflows = self.extract_workflows(workflow_list)
 
+        self.valid_branches = []
+
     def extract_parts(self, part_list): 
         parts = []
         part_pattern = re.compile(r"(\d+)")
@@ -75,9 +77,72 @@ class Workflows():
             sum_part_ratings += sum(part)
         return sum_part_ratings
 
-    def distinct_ratings(self):
+    def generate_combinations(self, input_list):
+        paths = []
+        for i in range(len(input_list)):
+            path = [f"!{k}" for k in input_list[:i]]        
+            if input_list[i]:
+                path.append(input_list[i])
+            paths.append(path)
+        return paths
+
+
+    def set_valid_branches(self, key="in", current_path=[]):
+        keys = [k for k in self.workflows[key].keys()]
+        values = [v for v in self.workflows[key].values()]
+        new_keys = self.generate_combinations(keys)
+        for key, val in zip(new_keys, values):
+            next_path = current_path[:]
+            next_path.extend(key)
+            if val in list(self.workflows.keys()):
+                self.set_valid_branches(val, next_path)
+            elif val == "A":
+                self.valid_branches.append(next_path)
+                # return next_path
+            elif val == "R":
+                pass
+
+    def max_combinations(self):
         
-        
+        combinations = []
+        for branch in self.valid_branches:
+            limit = {"x":[1,4000], "m": [1,4000], "a": [1,4000], "s":[1,4000]}
+            letter, symbol, number = None, None, None
+            for sub_branch in branch:
+                values = re.match(r'([!]?)(\w)([<>])(\d+)', sub_branch)
+                
+                negation = values.group(1)
+                letter = values.group(2)
+                symbol = values.group(3)
+                number = int(values.group(4))
+
+                if negation == "!":
+                    if symbol == ">":
+                        number+=1
+                        symbol = "<"
+                    elif symbol == "<":
+                        number-=1
+                        symbol = ">"
+                    
+                if "<" in symbol:
+                    new_limit = number-1
+                    limit[letter][1] = new_limit
+                elif ">" in symbol:
+                    new_limit = number+1
+                    limit[letter][0] = new_limit
+                else:
+                    raise ValueError("Unexpected Value")
+
+            num_combinations = 1
+            for val_range in limit.values():
+                _min, _max = val_range[0], val_range[1]
+                range = _max - _min +1 
+                num_combinations *= range
+            
+            combinations
+            combinations.append(num_combinations)
+        return sum(combinations)
+            
 
 # %%
 if __name__ == "__main__":
@@ -89,5 +154,5 @@ if __name__ == "__main__":
         workflows.sort_parts()
         rating = workflows.sum_part_ratings()
         print(f"Solution to first problem: {rating}")
-        print(f"Solution to second problem: {workflows.distinct_ratings()}")
-        
+        workflows.set_valid_branches()
+        print(f"Solution to second problem: {workflows.max_combinations()}")
