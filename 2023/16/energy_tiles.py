@@ -32,36 +32,34 @@ class EnergyTiles():
         self.vel_up = Vel(0, -1)
         self.vel_down = Vel(0, 1)
     
-    def print(self, thing: "list[str]"):
-        for line in thing:
-            print(line)
+    def print(self):
+        for tile_row, energy_row in zip(self.contraption, self.energized_tiles):
+            for tile, energy in zip(tile_row, energy_row):
+                if energy == 1:
+                    print("o", end="")            
+                else:
+                    print(tile, end="")
+            print()
 
     def energize_tiles(self):
-        change_in_tiles = True
+        change_in_tiles = 0
         beams = [Beam(0,0,self.vel_right)]
-        while beams and change_in_tiles < 100:
+        while beams and change_in_tiles < 20:
             new_beams = []
+            energized_count_before = self.count_energized()
             for beam in beams:
-                change_in_tiles += self.update_tiles(beam)
+                self.energized_tiles[beam.y][beam.x] = 1
                 updated_beams = self.update_vel(beam) 
                 new_beams.extend([self.update_pos(beam) for beam in updated_beams])
+            energized_count_after = self.count_energized()
+            if energized_count_after <= energized_count_before:
+                change_in_tiles += 1
             beams = [beam for beam in new_beams if beam]
-
-        self.print(self.contraption)
-        self.print(self.energized_tiles)
-                
- 
-    def update_tiles(self, beam):
-        energized_count_before = self.count_energized()
-        self.energized_tiles[beam.y][beam.x] = 1
-        energized_count_after = self.count_energized()
-        return energized_count_after >= energized_count_before
+            if change_in_tiles > 0:
+                print((energized_count_before, energized_count_after,len(beams)))
+                for beam in beams:
+                    print(beam)
         
-    def get_hash(self, panel):
-        hash_object = hashlib.sha256(''.join(panel).encode())
-        hash_value = hash_object.hexdigest()[:8]
-        return hash_value
-            
     def count_energized(self):
         energized_tiles = 0
         for row in self.energized_tiles:
@@ -72,14 +70,10 @@ class EnergyTiles():
 
         beams = []
         new_tile = self.contraption[beam.y][beam.x]
-        print(new_tile)
-        print(beam)
         from_left = beam.vel.x == 1
         from_right = beam.vel.x == -1
         from_up = beam.vel.y == 1
         from_down = beam.vel.y == -1
-        
-        print(from_left, from_right, from_up, from_down)
         
         if new_tile == "|":
             if from_left or from_right:
@@ -87,7 +81,6 @@ class EnergyTiles():
                 beam_b = Beam(beam.x, beam.y, self.vel_down)
                 beams.extend([beam_a, beam_b])
             else:
-                print("WHY ARE YOU HERHERHERE!>>!>")
                 beams.append(beam)
         elif new_tile == "-":
             if from_up or from_down:
@@ -121,26 +114,21 @@ class EnergyTiles():
         else:
             beams.append(beam)
         
-        print("__________")
-        for beam in beams:
-            print(beam)
-        print("__________")
-        
         return beams 
 
     def update_pos(self, beam):
-        print(beam)
         beam.x = beam.x + beam.vel.x
-        within_width = ((0 <= beam.x) and (beam.x <= self.contraption_width-1))
+        within_width = ((beam.x >= 0 ) and (beam.x <= self.contraption_width-1))
         
         beam.y = beam.y + beam.vel.y
-        within_height = ((0 <= beam.y) and (beam.y <= self.contraption_height-1))
+        within_height = ((beam.y >=0) and (beam.y <= self.contraption_height-1))
 
         if within_width and within_height:
             return beam
         else:
             return None 
         
+
 
 # %%
 if __name__ == "__main__":
@@ -153,3 +141,5 @@ if __name__ == "__main__":
         print(f"Solution to first problem: {energy_tiles.count_energized()}")
         # print(f"Solution to first problem: {energy_tiles.calc_focusing_power()}")
         
+
+
