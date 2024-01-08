@@ -4,10 +4,7 @@ import unittest
 from crt import CRT
 class TestCRT(unittest.TestCase):
 
-    puzzle_input_a = ["noop",
-                      "addx 3",
-                      "addx -5",]
-    puzzle_input_b = ["addx 15",
+    puzzle_input = ["addx 15",
                       "addx -11",
                       "addx 6",
                       "addx -3",
@@ -155,7 +152,7 @@ class TestCRT(unittest.TestCase):
                       "noop",]
     
     def test_part_one(self):
-        crt = CRT(self.puzzle_input_b, cycle_monitor=[20,60,100,140,180,220])
+        crt = CRT(self.puzzle_input)
         crt.execute_instructions()
         expected_sig_strs = [21,19,18,21,16,18]
         self.assertEqual(crt.signal_strengths, expected_sig_strs)
