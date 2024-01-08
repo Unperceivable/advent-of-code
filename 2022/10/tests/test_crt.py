@@ -155,20 +155,12 @@ class TestCRT(unittest.TestCase):
                       "noop",]
     
     def test_part_one(self):
-        crt = CRT(self.puzzle_input_a, cycle_monitor=[1,2,3,4,5])
-        expected_result = 9
+        crt = CRT(self.puzzle_input_b, cycle_monitor=[20,60,100,140,180,220])
         crt.execute_instructions()
-        expected_result = [1,1,4,4,-1]
-        self.assertEqual(crt.signal_strengths(), expected_result)
-        expected_result = 13140
-        self.assertEqual(crt.sum_signal_strength(), expected_result)
-
-        crt = CRT(self.puzzle_input_a, cycle_monitor=[20,40,60,100,140,180,220])
-        crt.execute_instructions()
-        expected_result = [420,1140,1800,2940,2880,3960]
-        self.assertEqual(crt.signal_strengths(), expected_result)
-        expected_result = 13140
-        self.assertEqual(crt.sum_signal_strengths(), expected_result)
+        expected_sig_strs = [21,19,18,21,16,18]
+        self.assertEqual(crt.signal_strengths, expected_sig_strs)
+        expected_sum_sig_strs = 13140
+        self.assertEqual(crt.sum_signal_strengths(), expected_sum_sig_strs)
 
     
     def test_part_two(self):
