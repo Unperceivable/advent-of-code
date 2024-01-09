@@ -34,9 +34,9 @@ class TestMonkeyBusiness(unittest.TestCase):
     
     def test_part_one(self):
         monkey_buisness = MonkeyBusiness(self.puzzle_input)
+        monkey_buisness.observe()
         expected_monkey_business_level = 10605
-        self.assertEqual(monkey_buisness.level, expected_monkey_business_level)
-
+        self.assertEqual(monkey_buisness.get_level(), expected_monkey_business_level)
     
     def test_part_two(self):
         pass
