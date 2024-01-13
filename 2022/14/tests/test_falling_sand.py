@@ -12,4 +12,6 @@ class TestFallingSand(unittest.TestCase):
 
     
     def test_part_two(self):
-        pass
+        falling_sand = FallingSand(self.puzzle_input, floor=True)
+        expected_result = 93
+        self.assertEqual(falling_sand.max_sand(), expected_result)
