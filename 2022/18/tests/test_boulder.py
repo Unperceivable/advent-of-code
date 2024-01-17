@@ -29,4 +29,10 @@ class TestBoulder(unittest.TestCase):
         self.assertEqual(boulder.get_lava_drop_surface(), expected_result)
     
     def test_part_two(self):
-        pass
+        boulder = Boulder(self.puzzle_input_a)
+        expected_result = 10
+        self.assertEqual(boulder.get_lava_drop_surface(exclude_pockets=True), expected_result)
+
+        boulder = Boulder(self.puzzle_input_b)
+        expected_result = 58
+        self.assertEqual(boulder.get_lava_drop_surface(exclude_pockets=True), expected_result)
