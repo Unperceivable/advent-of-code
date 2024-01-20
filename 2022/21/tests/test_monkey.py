@@ -24,4 +24,6 @@ class TestMonkey(unittest.TestCase):
         self.assertEqual(monkey.root_value(), expected_result)
     
     def test_part_two(self):
-        pass
+        monkey = Monkey(self.puzzle_input)
+        expected_result = 301
+        self.assertEqual(monkey.human_value(), expected_result)
