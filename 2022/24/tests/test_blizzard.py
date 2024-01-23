@@ -2,13 +2,12 @@ import unittest
 from blizzard import Blizzard
 class TestBlizzard(unittest.TestCase):
 
-    puzzle_input = ["#.#####",
-                    "#.....#",
-                    "#>....#",
-                    "#.....#",
-                    "#...v.#",
-                    "#.....#",
-                    "#####.#",]
+    puzzle_input = ["#.######",
+                    "#>>.<^<#",
+                    "#.<..<<#",
+                    "#>v.><>#",
+                    "#<^v^^>#",
+                    "######.#",]
 
     def test_part_one(self):
         blizzard = Blizzard(self.puzzle_input)
