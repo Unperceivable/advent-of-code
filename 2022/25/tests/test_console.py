@@ -19,7 +19,7 @@ class TestConsole(unittest.TestCase):
     def test_part_one(self):
         console = Console(self.puzzle_input)
         expected_result = "2=-1=0"
-        self.assertEqual(console.snafu_number(), expected_result)
+        self.assertEqual(console.sum_snafu_numbers(), expected_result)
     
     def test_part_two(self):
         pass
