@@ -17,7 +17,9 @@ class TestSonar(unittest.TestCase):
     def test_part_one(self):
         sonar = Sonar(self.puzzle_input)
         expected_result = 7
-        self.assertEqual(sonar.count_larger_than_prev_value, expected_result)
+        self.assertEqual(sonar.count_larger_than_prev(), expected_result)
     
     def test_part_two(self):
-        pass
+        sonar = Sonar(self.puzzle_input)
+        expected_result = 5
+        self.assertEqual(sonar.count_larger_than_prev(array_size=3), expected_result)
