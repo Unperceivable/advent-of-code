@@ -16,4 +16,6 @@ class TestDive(unittest.TestCase):
         self.assertEqual(dive.get_dive_length(), expected_result)
     
     def test_part_two(self):
-        pass
+        dive = Dive(self.puzzle_input)
+        expected_result = 900
+        self.assertEqual(dive.get_dive_length(inverted=True), expected_result)
