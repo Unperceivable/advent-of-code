@@ -21,4 +21,6 @@ class TestSubmarine(unittest.TestCase):
         self.assertEqual(submarine.get_power_consumption(), expected_result)
     
     def test_part_two(self):
-        pass
+        submarine = Submarine(self.puzzle_input)
+        expected_result = 230
+        self.assertEqual(submarine.get_life_support_rating(), expected_result)
