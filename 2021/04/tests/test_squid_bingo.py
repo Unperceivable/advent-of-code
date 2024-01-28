@@ -28,4 +28,6 @@ class TestSquidBingo(unittest.TestCase):
         self.assertEqual(squid_bingo.get_final_score(), expected_result)
     
     def test_part_two(self):
-        pass
+        squid_bingo = SquidBingo(self.puzzle_input)
+        expected_result = 1924
+        self.assertEqual(squid_bingo.get_final_score(last_board=True), expected_result)
