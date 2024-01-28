@@ -19,18 +19,22 @@ class SquidBingo():
             else:
                 idx+=1
         return boards 
-                
-    def get_final_score(self):
-        
+    def get_final_score(self, last_board=False):
+        finished_boards = set()
         for num in self.numbers:
             for idx, board in self.boards.items():
                 for y, row in enumerate(board):
                     for x, value in enumerate(row):
                         if num == value:
+                            bingo_value = None
                             self.scores[idx][y][x] = True    
-                            bingo_value = self.get_if_bingo(idx, x, y, value)
+                            if (not last_board) or idx not in finished_boards:
+                                bingo_value = self.get_if_bingo(idx, x, y, value)
+                            
                             if bingo_value:
-                                return bingo_value
+                                finished_boards.add(idx)
+                                if (not last_board) or len(finished_boards) == self.num_boards:
+                                    return bingo_value
 
     def get_if_bingo(self, idx, x, y, value):
         scores = self.scores[idx]
@@ -50,3 +54,4 @@ if __name__ == "__main__":
         puzzle_input = puzzle_input_file.read().splitlines()
         squid_bingo = SquidBingo(puzzle_input)
         print(f"Solution to first problem: {squid_bingo.get_final_score()}")
+        print(f"Solution to second problem: {squid_bingo.get_final_score(last_board=True)}")
