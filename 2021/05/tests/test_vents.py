@@ -19,4 +19,6 @@ class TestVents(unittest.TestCase):
         self.assertEqual(vents.num_overlapping_lines(), expected_result)
     
     def test_part_two(self):
-        pass
+        vents = Vents(self.puzzle_input)
+        expected_result = 12
+        self.assertEqual(vents.num_overlapping_lines(diagonal_lines=True), expected_result)
