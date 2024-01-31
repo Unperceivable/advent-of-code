@@ -11,4 +11,6 @@ class TestWhales(unittest.TestCase):
         self.assertEqual(whales.get_fuel_spent(), expected_result)
     
     def test_part_two(self):
-        pass
+        whales = Whales(self.puzzle_input)
+        expected_result = 168
+        self.assertEqual(whales.get_fuel_spent(escalating_cost=True), expected_result)
