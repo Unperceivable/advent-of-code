@@ -15,4 +15,6 @@ class TestSmokeBasin(unittest.TestCase):
         self.assertEqual(smoke_basin.get_risk_level(), expected_result)
     
     def test_part_two(self):
-        pass
+        smoke_basin = SmokeBasin(self.puzzle_input)
+        expected_result = 1134
+        self.assertEqual(smoke_basin.prod_largest_basins(), expected_result)
