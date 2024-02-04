@@ -22,4 +22,4 @@ class TestSyntaxCheck(unittest.TestCase):
     def test_part_two(self):
         syntax_check = SyntaxCheck(self.puzzle_input)
         expected_result = 288957
-        self.assertEqual(syntax_check.get_error_score(), expected_result)
+        self.assertEqual(syntax_check.get_completion_score(), expected_result)
